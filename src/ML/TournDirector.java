@@ -1,6 +1,9 @@
 package ML;
 
-import java.util.ArrayList;
+//import ML.Individual;
+//import java.util.ArrayList;
+import Game.Life;
+import ML.Bot;
 import java.util.Random;
 
 /*
@@ -14,114 +17,147 @@ import java.util.Random;
  */
 public class TournDirector {
 
-//MEMBER VARS---------------------------------------------------
-    Boolean DEBUG = false;
+//----| Global Vars |-----------------------------------------------
+    int numBots = 50;
+    //int mpSize = (int) (numBots *.25);
+    //int mpSize = 6;
+    int mpSize = numBots;
 
-    Individual[] matingPool;
-    int mpSize = 7;
+//----MEMBER VARS---------------------------------------------------
+    Boolean DEBUG = true;
+
+    //Individual[] matingPool;
+    Bot[] matingPool;
+
     GameDirector ourGD;
 
-    private final int[] indyDNA = {0, 0, 1,}; //1
-    private final int[] catDNA = {0, 1, 1}; //2
-    private final int[] dogDNA = {1, 1, 1}; //3
-    private final int[] iguDNA = {1, 1, 1, 1, 1, 1, 1, 1, 1}; //9
-    private final int[] fishDNA = {1, 1, 1, 0, 0, 0, 1}; //3
-    private final int[] monkeyDNA = {1, 1, 0, 1, 0, 0, 1, 1, 1}; //6
-    private final int[] snakeDNA = {0, 0, 0, 0, 0, 0, 1, 1, 1}; //3
+//------------------------------------------------------------------------------
+//----| Our Friendly Bots | findBots -------------------------------------------
+//------------------------------------------------------------------------------
+    Life myLife = new Life();
+//NOT THE SAME LIFE AS myLife IN MAINFRAME
+    Bot bob_Bot = new Bot(myLife, false, "bob_bot"); //Left
+    Bot lizzy_Bot = new Bot(myLife, false, "lizzy_Bot"); //Left
+    Bot sylvie_Bot = new Bot(myLife, false, "sylvie_Bot"); //Left
 
-    Individual indy = new Individual("indy", indyDNA);
-    Individual cat = new Individual("cat", catDNA);
-    Individual dog = new Individual("dog", dogDNA);
-    Individual iguana = new Individual("iguana", iguDNA);
-    Individual fish = new Individual("fish", fishDNA);
-    Individual monkey = new Individual("monkey", monkeyDNA);
-    Individual snake = new Individual("snake", snakeDNA);
+    Bot steven_Bot = new Bot(myLife, true, "steven_Bot"); //Right
+    Bot kyle_Bot = new Bot(myLife, true, "kyle_Bot"); //Right
+    Bot rosie_Bot = new Bot(myLife, true, "rosie_Bot"); //Right
 
-    Individual[] indList = new Individual[mpSize];
-
-//CONSTRUCTORS-------------------------------------------------
+//------------------------------------------------------------------------------
+//----| CONSTRUCTORS : findConstructors |---------------------------------------
+//------------------------------------------------------------------------------    
     public TournDirector() {
         ourGD = new GameDirector();
-        matingPool = new Individual[mpSize];
-        createIndList();
+        matingPool = new Bot[mpSize];
+    }
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+//----| METHODS |---------------------------------------------------------------
+//------------------------------------------------------------------------------
+    public Bot[] createBotList() {
+
+        Bot[] botList = new Bot[numBots];
+        //System.out.println("CreatingBotList " + botList.length);
+        botList[0] = bob_Bot;
+        botList[1] = steven_Bot;
+        botList[2] = lizzy_Bot;
+        botList[3] = kyle_Bot;
+        botList[4] = sylvie_Bot;
+        botList[5] = rosie_Bot;
+        return botList;
     }
 
-//METHODS------------------------------------------------------
-    public Individual[] createIndList() {
-
-        indList[0] = indy;
-        indList[1] = cat;
-        indList[2] = dog;
-        indList[3] = iguana;
-        indList[4] = fish;
-        indList[5] = monkey;
-        indList[6] = snake;
-
-        return indList;
-
-    }
-
-//    create initial population
-//	while (!done) {
-//		apply genetic operators to mating pool to create new individuals
-//		replacement
-//	}
-//	report results
-    public void SelectMatingPool(Individual[] ourList) {
-        int sum = 0;
-        int mpCount = 0;
-        //int mpCount = mpSize;
-        int rand;
-        Individual currIndiv;
-        Individual clone;
-//		evaluate fitness for each individual
-        for (int i = 0; i < ourList.length; i++) {
-            sum += ourList[i].countOnes();                        
-            ourList[i].setRSum(sum);            
+    public Bot[] createBotList(int n) {
+        Bot[] botList = new Bot[n];
+        String name = "";
+        boolean side;
+        for (int i = 0; i < n; i++) {
+            name = "";
+            name = name.concat("Bot_" + i);
+            side = (i % 2 == 0) ? true : false;
+            botList[i] = new Bot(myLife, side, name);
         }
 
-//		select mating pool
-        for (int i = 0; i < matingPool.length; i++) {
+        for (int i = 0; i < botList.length; i++) {
+            System.out.println("\n\t" + botList[i].toString());
+        }
+
+        return botList;
+    }
+
+    public Bot[] SelectMatingPool(Bot[] ourList) {
+        int sum = 0;
+        Bot clone;
+
+        int rand;
+        Bot currIndiv;
+        //Bot clone;
+
+        //evaluate fitness for each individual
+        for (int i = 0; i < ourList.length; i++) {
+            sum += ourList[i].countCells(); //Bound Must be positive            
+            //ourList[i].setRSum(sum);
+            ourList[i].addRSum(sum);
+        }
+
+        //select mating pool
+        //(-1) to normalize the loop to our array
+        // for (int mpCount = 0; mpCount < matingPool.length; mpCount++) {
+        int mpCount = 0;
+        //System.out.println("mpCount = " + mpCount + " matingPool.Length " + matingPool.length);
+
+        //------------------------------------------------------------------
+        for (int i = 0; i < ourList.length; i++) {
+            //for (int i = 0; i < matingPool.length; i++) {
             Random r = new Random();
             rand = r.nextInt(sum - 1);
-            System.out.println("rand = " + rand);
+            System.out.println("RAND = " + rand);
+            //System.out.println("ourList[i] " + ourList[i]);
             currIndiv = ourList[i];
-            while (currIndiv.rSum < rand) {
-                System.out.println(currIndiv.name + " rsum" + currIndiv.rSum + "::" + rand);
+
+            System.out.println("WHILE {");
+            while (currIndiv.rSum < rand) { //Loops until current individual rSum is greater than our rand
+                currIndiv.toString();
+                System.out.println("\t" + currIndiv.getName() + "-------");
+                System.out.println("\tcurrIndiv.rSum " + currIndiv.rSum + " RandomTarget= " + rand);
+
+                //System.out.println(currIndiv.name + " rsum= " + currIndiv.rSum + " :: RandomTarget= " + rand);
                 currIndiv = ourList[i++];
             }
-            System.out.println("ADDED " + currIndiv.name + ", with " + currIndiv.rSum + ">" + rand);
-            clone = new Individual(currIndiv);
-            matingPool[mpCount] = currIndiv;
-            mpCount++;
-        }
+            System.out.println("}\n");
+            //------------------------------------------------------------------
 
-    }
+            clone = new Bot(currIndiv); //????                
+            //matingPool[mpCount] = currIndiv;
+            matingPool[mpCount] = clone;
 
-    public Individual[] createMatingPool() {
-        Individual winner;
-        for (int i = 0; i < indList.length; i++) {
-            for (int j = 0; j < indList.length; j++) {
-                if (indList[i] == indList[j]) {
-                    continue; //tie
-                } else {
-                    if (DEBUG) {
-                        System.out.println("------------------------------------");
-                        System.out.println("i = " + i + ", j = " + j);
-                        System.out.println("[i] = " + indList[i].getName() + ", [j] = " + indList[j].getName());
-                        System.out.println("------------------------------------");
-                    }
-                    //winner = ourGD.eval(indList[i], indList[j]);
-                    //System.out.println("Winner = " + winner.getName());
-                    //matingPool.add(winner);
-                }
+            if (DEBUG) {
+                System.out.println("\n---------------");
+                System.out.println("----| BOT |----");
+                System.out.println("ADDED " + matingPool[mpCount].getName() + ", with " + currIndiv.rSum + ">" + rand);
+                System.out.println(clone.toString());
+                System.out.println("---------------");
+
+                System.out.println("\n----| MatingPool |----");
+                System.out.println("matingPool.length = " + matingPool.length);
+                System.out.println("mpCount = " + mpCount);
+//                  System.out.println("matingPool[mpCount].dna = " + matingPool[mpSize].dna);
             }
-        }
+            //---------------------
+            //INCREMENT------------
+            //mpSize++;
+            mpCount++;
+            //---------------------
+
+        } //for (ourList)
         return matingPool;
-    }
+        //} // for(mpcount)
+    } //SelectMatingPool()
 
     public void printMatingPool() {
-        System.out.println("MatingPool----------------------------------");
+        System.out.println("----| PRINTING matingPool |----------------------------------");
         for (int i = 0; i < matingPool.length; i++) {
 
             try {
@@ -131,15 +167,47 @@ public class TournDirector {
                 break;
             }
         }
-        System.out.println("--------------------------------------");
     }
 
+    public Bot[] getBestTwo(Bot[] botList) {
+        Bot[] bestTwo = new Bot[2];
+        Bot[] tempBots = new Bot[2];
+        Bot tempBot;
+
+        for (int i = 0; i < 2; i++) {
+
+            bestTwo[i] = new Bot(botList[i]);
+        }
+
+        for (int i = 0; i < botList.length; i++) {
+            try {
+                for (int j = 0; j < bestTwo.length; j++) {
+                    tempBot = new Bot(botList[i]);
+                    //System.out.println("botList[i].getDna().toString() = \n" + botList[i].getDNA().toString());
+                    if ((tempBot.getFitness() < bestTwo[j].getFitness()) &&
+                            (tempBot.getName() != bestTwo[0].getName())) {
+                        bestTwo[j] = tempBot;
+                        System.out.println("PLAYER ADDED: " + botList[i].getName() + ", over, " + tempBot.getName());
+                    }
+
+                }
+            } catch (NullPointerException e) {
+                break;
+            }
+        }
+
+        return bestTwo;
+
+    }
+//-------------------------------------------------------------
 //GETTERS SETTERS----------------------------------------------
-    public Individual[] getMatingPool() {
+//-------------------------------------------------------------
+
+    public Bot[] getMatingPool() {
         return matingPool;
     }
 
-    public void setMatingPool(Individual[] matingPool) {
+    public void setMatingPool(Bot[] matingPool) {
         this.matingPool = matingPool;
     }
 
@@ -147,12 +215,12 @@ public class TournDirector {
         return ourGD;
     }
 
-    public Individual[] getIndList() {
-        return indList;
+    public Life getLife() {
+        return myLife;
     }
 
-    public void setIndList(Individual[] indList) {
-        this.indList = indList;
+    public int getNumBots() {
+        return numBots;
     }
 
 }

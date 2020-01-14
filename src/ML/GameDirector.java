@@ -1,5 +1,7 @@
 package ML;
 
+//import ML.Individual;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,25 +12,24 @@ package ML;
  * @author jakepalmer
  */
 public class GameDirector {
+    
 
-    int fit;
-    
-    
     public GameDirector() {
 
+    }  
+
+    public Bot evalBots(Bot botOne, Bot botTwo) {
+        int oneCount = botOne.countCells();
+        int twoCount = botTwo.countCells();
+        if (oneCount > twoCount) {
+            return botOne;
+        } else if (oneCount < twoCount) {
+            return botTwo;
+        } else {
+            System.out.println("BOTS_TIE");
+            return botOne;
+        }
+
     }
 
-    public Individual eval(Individual indOne, Individual indTwo) {
-        int oneCount = indOne.countOnes();
-        int twoCount = indTwo.countOnes();
-        if (oneCount > twoCount) {
-            return indOne;
-        }else if (oneCount < twoCount){
-            return indTwo;
-        } else {
-            System.out.println("TIE");
-            return indOne;
-        }
-               
-    }
 }
