@@ -4,7 +4,10 @@ import java.awt.Graphics;
 import ML.Bot;
 
 /**
- * @author levenick Jan 19, 2017 2:44:19 PM
+ * Jakob M Paulson-Palmer
+ * This Class is responsible for creating our "life" gameboard.
+ * This includes creating the board, tracking and reporting the end game scores,
+ * and instantiating the starting cells.
  */
 public class Life {
 

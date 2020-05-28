@@ -5,7 +5,6 @@ import Game.Cell;
 import java.util.Random;
 
 /**
- *
  * @author jakepalmer
  */
 public class Bot {

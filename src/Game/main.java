@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Jakob M Paulson-Palmer
+ * The main class is responsible for creating the main java Frame the game will 
+ * be played on.
  */
 package Game;
 
