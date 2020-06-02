@@ -20,8 +20,8 @@ The game was initially created when Conway began experimenting with two-dimensio
 
 John Conway was a brilliant mathematician who became interested in games at university. He was able to join his passion for mathematics and games in numerous ways, the Game of Life being the result of one of these pursuits.
 
-Conway disliked the game of life after creating it, as it overshadowed many of his other accomplishments. Besides creating the game of life Conway contributed to mathematics, theoretical physics and cognitive science as a whole throughout his life. He found a variation of the Alexander polynomial creating the Conway polynomial in the process. He created an algorithm to find 
+Conway disliked the game of life after creating it, as it overshadowed many of his other accomplishments. Besides creating the game of life Conway contributed to mathematics, theoretical physics and cognitive science as a whole throughout his life. He discovered a counterexample to the intermediate value theorem with a continous function that takes every real value on a real line. He proved any integer can be written as a sum of 37 numbers raised to the fifth power. He proved the theoretical free will theorem, a version of a principal in quantum mechanics, and much much more.
 
 Unfortunately, Conway died April 11th, 2020 from COVID-19.
 
-We will remember John Conway for all of his contributions to technology, and the advancement of our understanding.
+We will remember John Conway for all of his contributions to mathematics, technology, and the advancement of our understanding.
