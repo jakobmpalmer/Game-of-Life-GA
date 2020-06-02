@@ -18,7 +18,7 @@ The game was initially created when Conway began experimenting with two-dimensio
 
 ### A Note about John Horton Conway.
 
-John Conway was a brillient mathematician who became interested in games at university. He was able to join his passion for mathematics and games in numerous ways, the Game of Life being the result of one of these pursuits.
+John Conway was a brilliant mathematician who became interested in games at university. He was able to join his passion for mathematics and games in numerous ways, the Game of Life being the result of one of these pursuits.
 
 Conway disliked the game of life after creating it, as it overshadowed many of his other accomplishments. Besides creating the game of life Conway contributed to mathematics, theoretical physics and cognitive science as a whole throughout his life. He found a variation of the Alexander polynomial creating the Conway polynomial in the process. He created an algorithm to find 
 
