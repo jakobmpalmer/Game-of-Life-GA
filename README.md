@@ -1,4 +1,4 @@
-# ML448_finalproject
+# ML448 Final Project: Conway's Game of Life Genetic Algorithm
 
 
 My Final Project for CS 448 Machine Learning examines Conway Game of life simulation with bots created through the 
